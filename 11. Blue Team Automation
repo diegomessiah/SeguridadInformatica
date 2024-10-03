@@ -1,0 +1,208 @@
+# 11. Blue Team Automation
+
+El **Blue Team** es el equipo encargado de defender la infraestructura de una organización contra ataques cibernéticos. La automatización permite al equipo de defensa reaccionar rápidamente ante incidentes de seguridad, detectar amenazas en tiempo real y mitigar los daños sin intervención manual constante.
+
+---
+
+## 11.1. ¿Qué es el Blue Team Automation?
+
+La automatización del Blue Team implica el uso de herramientas, scripts y soluciones para mejorar las siguientes áreas clave:
+
+1. **Detección de amenazas**: Monitoreo continuo de eventos en la red.
+2. **Respuesta a incidentes**: Ejecución automática de acciones de respuesta ante ataques detectados.
+3. **Mitigación y contención**: Automatización de medidas para contener la propagación de ataques.
+4. **Recuperación**: Aplicar contramedidas y restaurar sistemas afectados.
+
+---
+
+## 11.2. Herramientas Automatizadas para el Blue Team
+
+### 11.2.1. ELK Stack (Elastic, Logstash, Kibana)
+
+La **ELK Stack** es una plataforma de código abierto para la gestión de registros (logs) y análisis en tiempo real. Permite la recolección de registros desde diferentes sistemas y su análisis mediante la creación de alertas automatizadas.
+
+#### Instalación de la ELK Stack:
+```bash
+# Instalación de Elasticsearch
+sudo apt install elasticsearch
+# Instalación de Logstash
+sudo apt install logstash
+# Instalación de Kibana
+sudo apt install kibana
+```
+
+#### Configuración para monitorear registros:
+Con **Logstash**, puedes recopilar logs de diferentes fuentes, como servidores web, firewalls o IDS, y analizarlos en tiempo real con **Elasticsearch**. Las alertas se configuran en **Kibana** para activar acciones automáticas ante detección de amenazas.
+
+---
+
+### 11.2.2. Wazuh
+
+**Wazuh** es una plataforma de seguridad que proporciona detección de intrusiones, monitoreo de integridad de archivos, respuesta a incidentes y análisis de vulnerabilidades. Es altamente automatizable y puede integrarse con la ELK Stack.
+
+#### Instalación de Wazuh:
+```bash
+wget -qO - https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo apt-key add -
+sudo apt install wazuh-manager wazuh-agent
+```
+
+#### Ejemplo de respuesta automática ante incidentes:
+Wazuh permite crear reglas personalizadas que ejecutan comandos automáticamente cuando se detecta un incidente, como el aislamiento de un host comprometido o el cierre de conexiones sospechosas.
+
+---
+
+### 11.2.3. Suricata
+
+**Suricata** es un motor de detección de intrusiones (IDS) y prevención (IPS) que analiza el tráfico de red y detecta comportamientos sospechosos. Puedes automatizar la respuesta configurando reglas que bloqueen tráfico o ejecuten scripts de mitigación.
+
+#### Instalación de Suricata:
+```bash
+sudo apt install suricata
+```
+
+#### Ejemplo de automatización:
+Configura una regla en **Suricata** para detectar intentos de escaneo de puertos:
+```bash
+alert tcp any any -> $HOME_NET any (msg:"Escaneo de Puertos Detectado"; flags:S; threshold: type both, track by_src, count 5, seconds 60; sid:1000001;)
+```
+
+Una vez que se detecta el escaneo, puedes ejecutar scripts que bloqueen la IP en el firewall de manera automática:
+```bash
+iptables -A INPUT -s 192.168.1.100 -j DROP
+```
+
+---
+
+## 11.3. Automatización de Respuesta a Incidentes con SOAR
+
+### 11.3.1. ¿Qué es SOAR?
+
+**SOAR** (Security Orchestration, Automation, and Response) es una tecnología que ayuda a los Blue Teams a automatizar la respuesta ante incidentes de seguridad. Plataformas como **TheHive** y **Cortex** permiten crear flujos de trabajo automatizados para coordinar las respuestas a amenazas.
+
+### 11.3.2. TheHive & Cortex
+
+**TheHive** es una plataforma de código abierto para la gestión de incidentes de seguridad, mientras que **Cortex** permite ejecutar análisis automatizados y respuestas a incidentes.
+
+#### Instalación de TheHive:
+```bash
+wget https://repo.thehive-project.org/repository/releases/org/thp/thehive/thehive/4.1.4/thehive-4.1.4.rpm
+sudo yum install thehive-4.1.4.rpm
+```
+
+#### Creación de un flujo SOAR automatizado:
+Puedes crear flujos de trabajo que, por ejemplo, envíen alertas a Slack o ejecuten scripts de contención cuando se detecte una amenaza.
+
+---
+
+## 11.4. Scripts de Respuesta Automática a Incidentes
+
+### 11.4.1. Monitoreo y Respuesta con Python
+
+Un script en Python puede monitorear archivos de logs y ejecutar acciones automáticas cuando se detecten patrones de ataque.
+
+**Ejemplo de script Python**:
+```python
+import time
+import os
+
+# Función para monitorear logs
+def monitorear_logs(logfile):
+    with open(logfile, 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            if 'alerta' in line:
+                ejecutar_respuesta()
+
+# Función para ejecutar respuesta automática
+def ejecutar_respuesta():
+    print("¡Alerta detectada! Ejecutando medidas de respuesta...")
+    os.system("iptables -A INPUT -s 192.168.1.100 -j DROP")
+
+# Monitoreo continuo
+while True:
+    monitorear_logs('/var/log/alertas.log')
+    time.sleep(5)
+```
+
+---
+
+## 11.5. Respuesta Automática ante Ataques Phishing
+
+### 11.5.1. Automatización de Análisis de Correos Phishing con PhishTool
+
+Herramientas como **PhishTool** permiten analizar automáticamente correos sospechosos y activar respuestas automáticas, como la eliminación de correos o la advertencia a los usuarios.
+
+#### Integración con Python:
+Puedes usar la API de PhishTool para automatizar el análisis de correos entrantes y ejecutar acciones basadas en el resultado del análisis.
+
+```python
+import requests
+
+# Enviar un correo sospechoso para análisis
+url = "https://api.phishtool.com/analyze"
+headers = {'Authorization': 'Bearer tu_token_api'}
+file = {'file': open('phishing_email.eml', 'rb')}
+
+response = requests.post(url, headers=headers, files=file)
+if response.json()['result'] == 'malicious':
+    print("Correo malicioso detectado, eliminando...")
+    os.system("rm /mailbox/phishing_email.eml")
+```
+
+---
+
+## 11.6. Mitigación y Contención Automática
+
+### 11.6.1. Bloqueo Automático con Firewalls
+
+Puedes automatizar el bloqueo de IPs sospechosas en tu firewall utilizando herramientas como **Fail2Ban** o scripts personalizados.
+
+#### Instalación de Fail2Ban:
+```bash
+sudo apt install fail2ban
+```
+
+Fail2Ban puede configurarse para monitorear intentos fallidos de autenticación y bloquear automáticamente las direcciones IP que superen un umbral de intentos fallidos.
+
+**Configuración de Fail2Ban para SSH**:
+```bash
+[sshd]
+enabled  = true
+port     = ssh
+filter   = sshd
+logpath  = /var/log/auth.log
+maxretry = 5
+bantime  = 600
+```
+
+---
+
+## 11.7. Recuperación Automatizada
+
+### 11.7.1. Backups Automáticos
+
+El **Blue Team** también puede automatizar la recuperación después de un incidente configurando **backups automáticos** y scripts para restaurar sistemas rápidamente.
+
+#### Ejemplo de Script para Backup Automático:
+```bash
+#!/bin/bash
+# Script para backup diario
+tar -czf /backups/backup_$(date +%Y%m%d).tar.gz /var/www/html
+echo "Backup realizado: $(date)" >> /var/log/backup.log
+```
+
+---
+
+## 11.8. Buenas Prácticas en la Automatización del Blue Team
+
+1. **Pruebas periódicas**: Verifica que tus scripts y herramientas automatizadas funcionen correctamente realizando pruebas periódicas en entornos controlados.
+2. **Monitoreo continuo**: Implementa monitoreo en tiempo real para asegurarte de que las amenazas se detecten y mitiguen rápidamente.
+3. **Actualización constante**: Mantén actualizadas las reglas de detección y las firmas de amenazas para evitar que se cuelen nuevos tipos de ataques.
+4. **Escalación**: Define cuándo debe intervenir el equipo humano si una amenaza es demasiado compleja o no puede ser resuelta automáticamente.
+5. **Recuperación automatizada**: Asegúrate de que tus backups y scripts de restauración funcionen correctamente en caso de un incidente grave.
+
+---
+
+## 11.9. Conclusión
+
+La automatización es una herramienta poderosa para los Blue Teams, ya que les permite detectar, responder y mitigar ataques cibernéticos
