@@ -1,0 +1,54 @@
+# 1. Introducción a la Seguridad Informática
+
+## 1.1. Conceptos Básicos
+
+La **Seguridad Informática** se refiere a la protección de los sistemas y la información contra el acceso no autorizado, uso indebido, divulgación, destrucción o modificación. Sus tres pilares fundamentales son:
+- **Confidencialidad**: Garantizar que solo los usuarios autorizados accedan a la información.
+- **Integridad**: Asegurar que los datos no sean alterados sin autorización.
+- **Disponibilidad**: Mantener los sistemas y la información accesibles para los usuarios autorizados cuando lo necesiten.
+
+### 1.1.1. Otros Términos Clave
+- **Autenticación**: Proceso de verificar la identidad de un usuario o sistema.
+- **Autorización**: Proceso de verificar los permisos de un usuario para acceder a ciertos recursos.
+- **No repudio**: Garantiza que una acción o transacción no pueda ser negada por quien la realizó.
+
+---
+
+## 1.2. Amenazas y Vulnerabilidades
+
+Una **amenaza** es cualquier circunstancia o evento que tiene el potencial de dañar un sistema de información a través de acceso no autorizado, destrucción de datos, etc. Las amenazas pueden ser internas o externas, intencionales o accidentales.
+
+Por otro lado, una **vulnerabilidad** es una debilidad en un sistema que podría ser explotada por una amenaza para realizar una acción maliciosa. Algunas vulnerabilidades comunes incluyen:
+- **Buffer Overflow**: Ocurre cuando un programa escribe más datos en un buffer de lo que puede manejar, lo que puede permitir la ejecución de código arbitrario.
+- **Inyección SQL**: Tipo de vulnerabilidad en la que un atacante puede insertar o "inyectar" código SQL malicioso a través de una entrada no validada.
+- **Cross-Site Scripting (XSS)**: Vulnerabilidad que permite a un atacante inyectar scripts maliciosos en páginas web vistas por otros usuarios.
+
+---
+
+## 1.3. Tipos de Ataques
+
+Los **ataques** en ciberseguridad son acciones dirigidas a explotar vulnerabilidades en sistemas para obtener un beneficio. Estos pueden clasificarse en:
+- **Ataques Activos**: Aquellos en los que el atacante modifica o altera el sistema. Ejemplo: ataques DDoS, donde los atacantes buscan denegar el servicio a los usuarios legítimos.
+- **Ataques Pasivos**: En este tipo de ataque, el atacante solo observa o recopila información, pero no modifica el sistema. Ejemplo: espionaje en una red sin alterar el tráfico.
+
+### 1.3.1. Ingeniería Social
+La **ingeniería social** es una técnica utilizada por los atacantes para manipular a las personas con el objetivo de obtener acceso a información sensible. Ejemplos:
+- **Phishing**: Correos electrónicos fraudulentos que parecen ser legítimos, diseñados para engañar a las personas y que revelen información confidencial.
+- **Pretexting**: El atacante finge ser una persona de confianza para obtener acceso a datos o sistemas.
+
+---
+
+## 1.4. Buenas Prácticas para la Seguridad Informática
+Para mitigar las amenazas y vulnerabilidades, es importante seguir las siguientes prácticas:
+1. **Mantener el software actualizado**: Instalar actualizaciones y parches de seguridad regularmente.
+2. **Usar contraseñas seguras**: Contraseñas largas, complejas, y diferentes para cada servicio. Además, implementar autenticación multifactor (MFA).
+3. **Cifrar la información sensible**: Usar protocolos como SSL/TLS para proteger la información durante su transmisión.
+4. **Realizar copias de seguridad**: Mantener backups de los datos críticos para evitar pérdidas en caso de un ataque o fallo del sistema.
+
+---
+
+## Referencias
+- [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
+- [OWASP Top 10 Security Risks](https://owasp.org/www-project-top-ten/)
+- [CIS Security Controls](https://www.cisecurity.org/controls/)
+
